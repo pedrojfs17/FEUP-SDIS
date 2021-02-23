@@ -5,33 +5,37 @@ import java.util.*;
 public class Server {
     private static Map<String, String> table = new HashMap<>();
 
+    private static DatagramSocket socket;
+    private static DatagramPacket packet;
+
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            System.out.println("Usage: java Server <portname>");
+            System.out.println("Usage: java Server.java <portname>");
             return;
         }
 
         int port = Integer.parseInt(args[0]);
 
-        DatagramSocket socket = new DatagramSocket(port);
+        Server.socket = new DatagramSocket(port);
 
-        String str = "";
-
-        while(!str.equals("STOP SERVER")) {
-            byte[] buf = new byte[1024];  
-            DatagramPacket packet = new DatagramPacket(buf, 1024);  
-            socket.receive(packet);  
-            str = new String(packet.getData(), 0, packet.getLength());  
-    
-            System.out.println("Server: " + str);
-    
+        while(true) {
+            String str = receivePacket();
             String response = handleCommand(str);
 
-            packet.setData(response.getBytes());
-            socket.send(packet);
+            Server.packet.setData(response.getBytes());
+            Server.socket.send(Server.packet);
         }
+    }
 
-        socket.close();
+    private static String receivePacket() throws IOException {
+        byte[] buf = new byte[1024];  
+        Server.packet = new DatagramPacket(buf, 1024);  
+        Server.socket.receive(Server.packet);  
+        String data = new String(Server.packet.getData(), 0, Server.packet.getLength());
+        
+        System.out.println("Server: " + data);  
+
+        return data;
     }
 
 	private static String handleCommand(String str) {

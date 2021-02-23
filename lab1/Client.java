@@ -4,7 +4,7 @@ import java.net.*;
 public class Client {
     public static void main(String[] args) throws IOException{
         if (args.length < 4 || args.length > 5) {
-            System.out.println("Usage: java Client <host> <port> <oper> <opnd1> [<opnd2>]");
+            System.out.println("Usage: java Client.java <host> <port> <oper> <opnd1> [<opnd2>]");
             return;
         }
 
