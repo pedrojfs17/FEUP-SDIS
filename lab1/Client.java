@@ -22,7 +22,7 @@ public class Client {
         socket.send(packet);
 
         //get response
-        byte[] rbuf = new byte[sbuf.length];
+        byte[] rbuf = new byte[1024];
         packet = new DatagramPacket(rbuf, rbuf.length);
         socket.receive(packet);
 

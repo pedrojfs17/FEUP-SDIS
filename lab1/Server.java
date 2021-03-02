@@ -40,15 +40,13 @@ public class Server {
 
 	private static String handleCommand(String str) {
         String[] command = str.split(" ");
-        int result;
 
         if (command[0].equals("REGISTER")) {
-            result = register(command[1], command[2]);
-            return "" + result + "\n" + command[1] + " " + command[2];
+            return "" + register(command[1], command[2]);
         } else if (command[0].equals("LOOKUP")) {
             String ip = lookup(command[1]);
             if (ip != null)
-                return "" + table.size() + "\n" + command[1] + " " + ip;
+                return command[1] + " " + ip;
         }
             
         return "-1";
